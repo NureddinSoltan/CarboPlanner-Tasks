@@ -8,11 +8,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ChevronUp, ChevronDown } from 'lucide-react';
+import { ChevronUp, ChevronDown, Search, Filter } from 'lucide-react';
 
 interface DataTableProps {
   items: Item[];
   onRowClick: (item: Item) => void;
+  isDark?: boolean;
 }
 
 interface SortableHeaderProps {
@@ -20,14 +21,15 @@ interface SortableHeaderProps {
   label: string;
   sortConfig: SortConfig;
   onSort: (field: SortField) => void;
+  isDark?: boolean;
 }
 
-function SortableHeader({ field, label, sortConfig, onSort }: SortableHeaderProps) {
+function SortableHeader({ field, label, sortConfig, onSort, isDark = true }: SortableHeaderProps) {
   const isActive = sortConfig.field === field;
 
   return (
-    <TableHead
-      className="cursor-pointer hover:bg-muted/50 focus:bg-muted/50 focus:outline-none focus:ring-2 focus:ring-ring"
+    <th
+      className="text-left p-6 cursor-pointer hover:bg-white/5 transition-colors duration-200"
       onClick={() => onSort(field)}
       tabIndex={0}
       role="columnheader"
@@ -41,18 +43,18 @@ function SortableHeader({ field, label, sortConfig, onSort }: SortableHeaderProp
       }}
     >
       <div className="flex items-center space-x-2">
-        <span>{label}</span>
+        <span className={`font-semibold ${isDark ? 'text-white/90' : 'text-gray-800'}`}>{label}</span>
         {isActive && (
-          <span className="text-primary" aria-hidden="true">
+          <span className={isDark ? 'text-white/70' : 'text-gray-600'}>
             {sortConfig.direction === 'asc' ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
           </span>
         )}
       </div>
-    </TableHead>
+    </th>
   );
 }
 
-export default function DataTable({ items, onRowClick }: DataTableProps) {
+export default function DataTable({ items, onRowClick, isDark = true }: DataTableProps) {
   const [filterConfig, setFilterConfig] = useState<FilterConfig>({
     searchText: '',
     typeFilter: 'all'
@@ -87,123 +89,141 @@ export default function DataTable({ items, onRowClick }: DataTableProps) {
   };
 
   return (
-    <Card className="glass-card hover-lift">
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold">Items</CardTitle>
-        <CardDescription className="text-base">
-          Filter and sort through your meals and training sessions
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        {/* Filters */}
-        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-          <div className="flex-1 space-y-2">
-            <label htmlFor="search" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-              Search
-            </label>
-            <Input
-              id="search"
-              type="text"
-              placeholder="Search by title or tags..."
-              value={filterConfig.searchText}
-              onChange={(e) => handleSearchChange(e.target.value)}
-              aria-label="Search items by title or tags"
-              className="search-input"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor="type-filter" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-              Type
-            </label>
-            <Select value={filterConfig.typeFilter} onValueChange={handleTypeFilterChange}>
-              <SelectTrigger id="type-filter" className="w-[180px]" aria-label="Filter by item type">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Types</SelectItem>
-                <SelectItem value="meal">Meals</SelectItem>
-                <SelectItem value="training">Training</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+    <div className="space-y-8">
+      {/* Filters */}
+      <div className="flex flex-col lg:flex-row gap-6">
+        <div className="flex-1 relative">
+          <Search className={`absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 ${isDark ? 'text-white/50' : 'text-gray-600'}`} />
+          <input
+            type="text"
+            placeholder="Search by title or tags..."
+            value={filterConfig.searchText}
+            onChange={(e) => handleSearchChange(e.target.value)}
+            className={`w-full pl-12 pr-4 py-4 backdrop-blur-xl rounded-2xl focus:outline-none focus:ring-2 transition-all duration-300 ${isDark
+              ? 'bg-white/10 border border-white/20 text-white placeholder-white/50 focus:ring-white/30 focus:bg-white/15'
+              : 'bg-white/20 border border-white/30 text-gray-900 placeholder-gray-600 focus:ring-white/40 focus:bg-white/25'
+              }`}
+          />
         </div>
 
-        {/* Results count */}
-        <div className="text-sm text-muted-foreground">
-          Showing {filteredAndSortedItems.length} of {items.length} items
+        <div className="relative">
+          <select
+            value={filterConfig.typeFilter}
+            onChange={(e) => handleTypeFilterChange(e.target.value)}
+            className={`appearance-none backdrop-blur-xl rounded-2xl px-6 py-4 pr-12 focus:outline-none focus:ring-2 transition-all duration-300 min-w-[200px] ${isDark
+              ? 'bg-white/10 border border-white/20 text-white focus:ring-white/30 focus:bg-white/15 [&>option]:bg-slate-800 [&>option]:text-white'
+              : 'bg-white/20 border border-white/30 text-gray-900 focus:ring-white/40 focus:bg-white/25 [&>option]:bg-white [&>option]:text-gray-900'
+              }`}
+            style={{
+              colorScheme: isDark ? 'dark' : 'light'
+            }}
+          >
+            <option value="all">All Types</option>
+            <option value="meal">Meals</option>
+            <option value="training">Training</option>
+          </select>
+          <Filter className={`absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${isDark ? 'text-white/50' : 'text-gray-600'}`} />
         </div>
+      </div>
 
-        {/* Table */}
-        <div className="rounded-lg border border-border/50 overflow-hidden shadow-lg">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-muted/30">
+      {/* Results count */}
+      <p className={isDark ? 'text-white/60' : 'text-gray-600'}>
+        Showing {filteredAndSortedItems.length} of {items.length} items
+      </p>
+
+      {/* Table */}
+      <div className={`backdrop-blur-xl rounded-3xl overflow-hidden ${isDark
+        ? 'bg-white/5 border border-white/20'
+        : 'bg-white/10 border border-white/30'
+        }`}>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-white/5">
+              <tr>
                 <SortableHeader
                   field="title"
                   label="Title"
                   sortConfig={sortConfig}
                   onSort={handleSort}
+                  isDark={isDark}
                 />
                 <SortableHeader
                   field="type"
                   label="Type"
                   sortConfig={sortConfig}
                   onSort={handleSort}
+                  isDark={isDark}
                 />
                 <SortableHeader
                   field="kcal"
                   label="Calories"
                   sortConfig={sortConfig}
                   onSort={handleSort}
+                  isDark={isDark}
                 />
-                <TableHead className="font-semibold">Tags</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
+                <th className={`text-left p-6 font-semibold ${isDark ? 'text-white/90' : 'text-gray-800'}`}>Tags</th>
+              </tr>
+            </thead>
+            <tbody>
               {filteredAndSortedItems.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={4} className="h-24 text-center text-muted-foreground">
+                <tr>
+                  <td colSpan={4} className={`text-center py-12 ${isDark ? 'text-white/50' : 'text-gray-600'}`}>
                     No items found matching your criteria.
-                  </TableCell>
-                </TableRow>
+                  </td>
+                </tr>
               ) : (
-                filteredAndSortedItems.map((item) => (
-                  <TableRow
+                filteredAndSortedItems.map((item, index) => (
+                  <tr
                     key={item.id}
-                    className="table-row-hover cursor-pointer focus:outline-none focus:ring-2 focus:ring-ring"
+                    className="group hover:bg-white/5 cursor-pointer transition-all duration-200 border-t border-white/10"
                     onClick={() => onRowClick(item)}
-                    tabIndex={0}
-                    role="row"
-                    aria-label={`Item: ${item.title}, Type: ${item.type}, Calories: ${item.kcal}`}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        onRowClick(item);
-                      }
-                    }}
                   >
-                    <TableCell className="font-semibold text-foreground">
-                      {item.title}
-                    </TableCell>
-                    <TableCell>
-                      <span className={item.type === 'meal' ? 'meal-badge' : 'training-badge'}>
+                    <td className="p-6">
+                      <p className={`font-semibold transition-colors duration-200 ${isDark
+                        ? 'text-white group-hover:text-white/90'
+                        : 'text-gray-900 group-hover:text-gray-700'
+                        }`}>
+                        {item.title}
+                      </p>
+                    </td>
+                    <td className="p-6">
+                      <span className={`px-4 py-2 rounded-full text-sm font-semibold text-white ${item.type === 'meal'
+                        ? 'bg-gradient-to-r from-emerald-400 to-teal-600'
+                        : 'bg-gradient-to-r from-violet-400 to-purple-600'
+                        }`}>
                         {capitalize(item.type)}
                       </span>
-                    </TableCell>
-                    <TableCell className="font-medium text-foreground">
-                      {formatKcal(item.kcal)}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {formatTags(item.tags)}
-                    </TableCell>
-                  </TableRow>
+                    </td>
+                    <td className="p-6">
+                      <p className={`font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{item.kcal} kcal</p>
+                    </td>
+                    <td className="p-6">
+                      <div className="flex flex-wrap gap-1">
+                        {item.tags.slice(0, 2).map((tag, tagIndex) => (
+                          <span key={tagIndex} className={`px-2 py-1 text-xs rounded-full ${isDark
+                            ? 'bg-white/20 text-white/70'
+                            : 'bg-gray-200 text-gray-700'
+                            }`}>
+                            {tag}
+                          </span>
+                        ))}
+                        {item.tags.length > 2 && (
+                          <span className={`px-2 py-1 text-xs rounded-full ${isDark
+                            ? 'bg-white/20 text-white/70'
+                            : 'bg-gray-200 text-gray-700'
+                            }`}>
+                            +{item.tags.length - 2}
+                          </span>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
                 ))
               )}
-            </TableBody>
-          </Table>
+            </tbody>
+          </table>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
