@@ -8,19 +8,33 @@ interface ThemeToggleProps {
 }
 
 export default function ThemeToggle({ onThemeChange }: ThemeToggleProps) {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(true);
 
   useEffect(() => {
-    // Check if dark mode is enabled
-    const isDarkMode = document.documentElement.classList.contains('dark');
+    // Check localStorage first, then check DOM classes, default to dark
+    const savedTheme = localStorage.getItem('theme');
+    let isDarkMode = true; // Default to dark
+
+    if (savedTheme) {
+      isDarkMode = savedTheme === 'dark';
+    } else {
+      // If no saved theme, check DOM classes or default to dark
+      isDarkMode = document.documentElement.classList.contains('dark') ||
+        !document.documentElement.classList.contains('light');
+    }
+
     setIsDark(isDarkMode);
     onThemeChange?.(isDarkMode);
 
-    // Ensure proper class is set
+    // Ensure proper classes are set
     if (isDarkMode) {
+      document.documentElement.classList.add('dark');
       document.documentElement.classList.remove('light');
+      localStorage.setItem('theme', 'dark');
     } else {
+      document.documentElement.classList.remove('dark');
       document.documentElement.classList.add('light');
+      localStorage.setItem('theme', 'light');
     }
   }, [onThemeChange]);
 
@@ -43,9 +57,9 @@ export default function ThemeToggle({ onThemeChange }: ThemeToggleProps) {
   return (
     <button
       onClick={toggleTheme}
-      className={`group relative p-3 rounded-2xl backdrop-blur-xl transition-all duration-300 hover:scale-105 ${isDark
+      className={`group relative p-3 rounded-2xl backdrop-blur-xl transition-all duration-300 hover:scale-105 shadow-lg ${isDark
         ? 'bg-white/10 border border-white/20 hover:bg-white/20'
-        : 'bg-gray-100/80 border border-gray-200 hover:bg-gray-200/80'
+        : 'bg-white border border-gray-300 hover:bg-gray-50 shadow-md hover:shadow-lg'
         }`}
       aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
     >

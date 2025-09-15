@@ -52,9 +52,9 @@ export default function StatusCards({ items, isDark = true }: StatusCardsProps) 
         return (
           <div
             key={stat.title}
-            className={`group relative overflow-hidden rounded-3xl backdrop-blur-xl p-8 transition-all duration-500 hover:scale-[1.02] hover:-translate-y-2 animate-fade-in-up ${isDark
-              ? 'bg-white/10 border border-white/20 hover:bg-white/15'
-              : 'bg-white/20 border border-white/30 hover:bg-white/25'
+            className={`group relative overflow-hidden rounded-3xl backdrop-blur-xl p-8 transition-all duration-500 hover:scale-[1.02] hover:-translate-y-2 animate-fade-in-up shadow-lg ${isDark
+              ? 'bg-white/10 border border-white/20 hover:bg-white/15 hover:shadow-xl'
+              : 'bg-white/90 border border-gray-200 hover:bg-white hover:shadow-xl hover:border-gray-300'
               }`}
             style={{ animationDelay: `${200 + index * 150}ms` }}
           >

@@ -93,15 +93,15 @@ export default function DataTable({ items, onRowClick, isDark = true }: DataTabl
       {/* Filters */}
       <div className="flex flex-col lg:flex-row gap-6">
         <div className="flex-1 relative">
-          <Search className={`absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 ${isDark ? 'text-white/50' : 'text-gray-600'}`} />
+          <Search className={`absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 ${isDark ? 'text-white/50' : 'text-gray-700'}`} />
           <input
             type="text"
             placeholder="Search by title or tags..."
             value={filterConfig.searchText}
             onChange={(e) => handleSearchChange(e.target.value)}
-            className={`w-full pl-12 pr-4 py-4 backdrop-blur-xl rounded-2xl focus:outline-none focus:ring-2 transition-all duration-300 ${isDark
-              ? 'bg-white/10 border border-white/20 text-white placeholder-white/50 focus:ring-white/30 focus:bg-white/15'
-              : 'bg-white/20 border border-white/30 text-gray-900 placeholder-gray-600 focus:ring-white/40 focus:bg-white/25'
+            className={`w-full pl-12 pr-4 py-4 backdrop-blur-xl rounded-2xl focus:outline-none focus:ring-2 transition-all duration-300 border ${isDark
+              ? 'bg-white/10 border-white/20 text-white placeholder-white/50 focus:ring-white/30 focus:bg-white/15'
+              : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:ring-blue-500 focus:border-blue-500 shadow-sm'
               }`}
           />
         </div>
@@ -110,9 +110,9 @@ export default function DataTable({ items, onRowClick, isDark = true }: DataTabl
           <select
             value={filterConfig.typeFilter}
             onChange={(e) => handleTypeFilterChange(e.target.value)}
-            className={`appearance-none backdrop-blur-xl rounded-2xl px-6 py-4 pr-12 focus:outline-none focus:ring-2 transition-all duration-300 min-w-[200px] ${isDark
-              ? 'bg-white/10 border border-white/20 text-white focus:ring-white/30 focus:bg-white/15 [&>option]:bg-slate-800 [&>option]:text-white'
-              : 'bg-white/20 border border-white/30 text-gray-900 focus:ring-white/40 focus:bg-white/25 [&>option]:bg-white [&>option]:text-gray-900'
+            className={`appearance-none backdrop-blur-xl rounded-2xl px-6 py-4 pr-12 focus:outline-none focus:ring-2 transition-all duration-300 min-w-[200px] border ${isDark
+              ? 'bg-white/10 border-white/20 text-white focus:ring-white/30 focus:bg-white/15 [&>option]:bg-slate-800 [&>option]:text-white'
+              : 'bg-white border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 shadow-sm [&>option]:bg-white [&>option]:text-gray-900'
               }`}
             style={{
               colorScheme: isDark ? 'dark' : 'light'
@@ -122,7 +122,7 @@ export default function DataTable({ items, onRowClick, isDark = true }: DataTabl
             <option value="meal">Meals</option>
             <option value="training">Training</option>
           </select>
-          <Filter className={`absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${isDark ? 'text-white/50' : 'text-gray-600'}`} />
+          <Filter className={`absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${isDark ? 'text-white/50' : 'text-gray-700'}`} />
         </div>
       </div>
 
@@ -132,13 +132,13 @@ export default function DataTable({ items, onRowClick, isDark = true }: DataTabl
       </p>
 
       {/* Table */}
-      <div className={`backdrop-blur-xl rounded-3xl overflow-hidden ${isDark
+      <div className={`backdrop-blur-xl rounded-3xl overflow-hidden shadow-lg ${isDark
         ? 'bg-white/5 border border-white/20'
-        : 'bg-white/10 border border-white/30'
+        : 'bg-white border border-gray-200'
         }`}>
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-white/5">
+            <thead className={isDark ? 'bg-white/5' : 'bg-gray-50'}>
               <tr>
                 <SortableHeader
                   field="title"
@@ -175,7 +175,10 @@ export default function DataTable({ items, onRowClick, isDark = true }: DataTabl
                 filteredAndSortedItems.map((item, index) => (
                   <tr
                     key={item.id}
-                    className="group hover:bg-white/5 cursor-pointer transition-all duration-200 border-t border-white/10"
+                    className={`group cursor-pointer transition-all duration-200 border-t ${isDark
+                      ? 'hover:bg-white/5 border-white/10'
+                      : 'hover:bg-gray-50 border-gray-200'
+                      }`}
                     onClick={() => onRowClick(item)}
                   >
                     <td className="p-6">
