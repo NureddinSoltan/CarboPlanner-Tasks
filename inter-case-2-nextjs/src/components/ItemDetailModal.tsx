@@ -40,7 +40,7 @@ export default function ItemDetailModal({ item, isOpen, onClose, isDark = true }
             <p className={isDark ? 'text-white/60' : 'text-gray-600'}>Detailed information</p>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="flex items-center gap-2">
               <label className={`text-sm font-semibold ${isDark ? 'text-white/80' : 'text-gray-700'}`}>ID:</label>
               <p className={`text-sm font-mono px-3 py-1 rounded-lg ${isDark

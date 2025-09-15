@@ -92,21 +92,30 @@ export default function Home() {
           }`} style={{ animationDelay: '1s' }} />
       </div>
 
-      <div className="relative z-10 container mx-auto py-12 px-6">
+      <div className="relative z-10 container mx-auto py-8 sm:py-12 px-4 sm:px-6">
         {/* Header */}
-        <div className="flex justify-between items-start mb-12 animate-fade-in-up" style={{ animationDelay: '0ms' }}>
-          <div className="space-y-4">
-            <h1 className={`text-6xl font-bold tracking-tight bg-gradient-to-r ${isDark
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-12 animate-fade-in-up gap-6" style={{ animationDelay: '0ms' }}>
+          {/* Mobile: Theme toggle on left, Desktop: Theme toggle on right */}
+          <div className="flex sm:hidden w-full justify-start">
+            <ThemeToggle onThemeChange={setIsDark} />
+          </div>
+
+          <div className="space-y-4 flex-1 text-center sm:text-left">
+            <h1 className={`text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight bg-gradient-to-r ${isDark
               ? 'from-white via-purple-200 to-blue-200'
               : 'from-gray-900 via-purple-600 to-blue-600'
               } bg-clip-text text-transparent`}>
               CarboPlanner
             </h1>
-            <p className={`text-xl ${isDark ? 'text-white/70' : 'text-gray-600'}`}>
+            <p className={`text-lg sm:text-xl ${isDark ? 'text-white/70' : 'text-gray-600'}`}>
               Luxury nutrition and fitness management
             </p>
           </div>
-          <ThemeToggle onThemeChange={setIsDark} />
+
+          {/* Desktop: Theme toggle on right */}
+          <div className="hidden sm:block flex-shrink-0">
+            <ThemeToggle onThemeChange={setIsDark} />
+          </div>
         </div>
 
         {/* Status Cards */}

@@ -57,7 +57,7 @@ export default function ThemeToggle({ onThemeChange }: ThemeToggleProps) {
   return (
     <button
       onClick={toggleTheme}
-      className={`group relative p-3 rounded-2xl backdrop-blur-xl transition-all duration-300 hover:scale-105 shadow-lg ${isDark
+      className={`group relative p-3 rounded-2xl backdrop-blur-xl transition-all duration-300 hover:scale-105 shadow-lg cursor-pointer ${isDark
         ? 'bg-white/10 border border-white/20 hover:bg-white/20'
         : 'bg-white border border-gray-300 hover:bg-gray-50 shadow-md hover:shadow-lg'
         }`}

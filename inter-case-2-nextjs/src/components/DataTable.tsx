@@ -93,15 +93,15 @@ export default function DataTable({ items, onRowClick, isDark = true }: DataTabl
       {/* Filters */}
       <div className="flex flex-col lg:flex-row gap-6">
         <div className="flex-1 relative">
-          <Search className={`absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 ${isDark ? 'text-white/50' : 'text-gray-700'}`} />
+          <Search className={`absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 z-10 ${isDark ? 'text-white/50' : 'text-gray-800'}`} />
           <input
             type="text"
             placeholder="Search by title or tags..."
             value={filterConfig.searchText}
             onChange={(e) => handleSearchChange(e.target.value)}
             className={`w-full pl-12 pr-4 py-4 backdrop-blur-xl rounded-2xl focus:outline-none focus:ring-2 transition-all duration-300 border ${isDark
-              ? 'bg-white/10 border-white/20 text-white placeholder-white/50 focus:ring-white/30 focus:bg-white/15'
-              : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:ring-blue-500 focus:border-blue-500 shadow-sm'
+              ? 'bg-white/10 border-white/20 text-white placeholder-white/50 focus:ring-white/30 focus:bg-white/15 hover:bg-white/15 hover:border-white/30'
+              : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:ring-blue-500 focus:border-blue-500 shadow-sm hover:bg-gray-50 hover:border-gray-400'
               }`}
           />
         </div>
@@ -110,9 +110,9 @@ export default function DataTable({ items, onRowClick, isDark = true }: DataTabl
           <select
             value={filterConfig.typeFilter}
             onChange={(e) => handleTypeFilterChange(e.target.value)}
-            className={`appearance-none backdrop-blur-xl rounded-2xl px-6 py-4 pr-12 focus:outline-none focus:ring-2 transition-all duration-300 min-w-[200px] border ${isDark
-              ? 'bg-white/10 border-white/20 text-white focus:ring-white/30 focus:bg-white/15 [&>option]:bg-slate-800 [&>option]:text-white'
-              : 'bg-white border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 shadow-sm [&>option]:bg-white [&>option]:text-gray-900'
+            className={`appearance-none backdrop-blur-xl rounded-2xl pl-12 pr-6 py-4 focus:outline-none focus:ring-2 transition-all duration-300 min-w-[200px] border cursor-pointer ${isDark
+              ? 'bg-white/10 border-white/20 text-white focus:ring-white/30 focus:bg-white/15 hover:bg-white/15 hover:border-white/30 [&>option]:bg-slate-800 [&>option]:text-white'
+              : 'bg-white border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 shadow-sm hover:bg-gray-50 hover:border-gray-400 [&>option]:bg-white [&>option]:text-gray-900'
               }`}
             style={{
               colorScheme: isDark ? 'dark' : 'light'
@@ -122,7 +122,7 @@ export default function DataTable({ items, onRowClick, isDark = true }: DataTabl
             <option value="meal">Meals</option>
             <option value="training">Training</option>
           </select>
-          <Filter className={`absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${isDark ? 'text-white/50' : 'text-gray-700'}`} />
+          <Filter className={`absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${isDark ? 'text-white/50' : 'text-gray-700'}`} />
         </div>
       </div>
 
@@ -201,9 +201,9 @@ export default function DataTable({ items, onRowClick, isDark = true }: DataTabl
                       <p className={`font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{item.kcal} kcal</p>
                     </td>
                     <td className="p-6">
-                      <div className="flex flex-wrap gap-1">
+                      <div className="flex flex-nowrap gap-1 w-full sm:w-auto">
                         {item.tags.slice(0, 2).map((tag, tagIndex) => (
-                          <span key={tagIndex} className={`px-2 py-1 text-xs rounded-full ${isDark
+                          <span key={tagIndex} className={`px-2 py-1 text-xs rounded-full whitespace-nowrap flex-1 sm:flex-none text-center ${isDark
                             ? 'bg-white/20 text-white/70'
                             : 'bg-gray-200 text-gray-700'
                             }`}>
@@ -211,7 +211,7 @@ export default function DataTable({ items, onRowClick, isDark = true }: DataTabl
                           </span>
                         ))}
                         {item.tags.length > 2 && (
-                          <span className={`px-2 py-1 text-xs rounded-full ${isDark
+                          <span className={`px-2 py-1 text-xs rounded-full whitespace-nowrap flex-1 sm:flex-none text-center ${isDark
                             ? 'bg-white/20 text-white/70'
                             : 'bg-gray-200 text-gray-700'
                             }`}>
