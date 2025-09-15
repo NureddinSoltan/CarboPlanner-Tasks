@@ -26,7 +26,7 @@ export default function ItemDetailModal({ item, isOpen, onClose, isDark = true }
         }`}>
         <button
           onClick={onClose}
-          className={`absolute right-6 top-6 p-2 rounded-full transition-colors duration-200 ${isDark
+          className={`absolute right-6 top-6 p-2 rounded-full transition-colors duration-200 cursor-pointer ${isDark
             ? 'bg-white/10 hover:bg-white/20'
             : 'bg-gray-100 hover:bg-gray-200'
             }`}
