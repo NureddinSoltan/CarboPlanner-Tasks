@@ -7,9 +7,10 @@ A simple Next.js app that lists meals and training items with filtering, sorting
 
 ### Features
 - **Theme toggle**: switch light/dark
-- **Filter & sort table**
+- **Fast filter, search & sort**: instant client-side interactions
 - **Item detail modal**
 - **Status cards**: totals and calories
+- **Responsive UI**: mobile-first layout with Tailwind and shadcn/ui
 
 ### Requirements
 - **Node**: 18+
@@ -37,6 +38,18 @@ Open http://localhost:3000
 pnpm build
 # or
 npm run build
+```
+
+### Test
+```bash
+pnpm test
+# or
+npm test
+
+# watch mode
+pnpm test --watch
+# or
+npm test -- --watch
 ```
 
 ### Project structure
